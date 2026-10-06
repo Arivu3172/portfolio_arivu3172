@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
-import 'package:portfolio_arivu/globals/cursor_tracker.dart';
-import 'package:portfolio_arivu/view/main_dashboard.dart';
+import 'package:portfolio_arivu/view/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PageStorageBucket bucket = PageStorageBucket();
     final TextTheme textTheme = GoogleFonts.spaceGroteskTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme,
     );
@@ -48,12 +46,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: CursorTracker(
-        child: PageStorage(
-          bucket: bucket,
-          child: const MainDashBoard(),
-        ),
-      ),
+      home: const SplashScreen(),
     );
   }
 }

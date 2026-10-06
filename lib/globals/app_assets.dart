@@ -1,5 +1,6 @@
 class AppAssets {
   static const String profile = 'assets/IMG_1753.PNG';
+  static const String splashLogo = 'assets/splash_logo.jpg';
   static const String certificate1 = 'assets/flutter.jpg';
   static const String certificate2 = 'assets/kcg.jpg';
   static const String certificate3 = 'assets/provisional.jpg';
