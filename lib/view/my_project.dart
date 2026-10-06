@@ -27,6 +27,7 @@ class _MyProjectState extends State<MyProject> {
       act: 'Feature Presentation',
       title: 'Stories Shipped in Code',
       line: 'Selected productions — each one a scene of product, UI, and craft.',
+      narration: PortfolioContent.sceneNarrations[4],
       child: GridView.builder(
         itemCount: projects.length,
         shrinkWrap: true,

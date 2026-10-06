@@ -18,6 +18,7 @@ class AboutMe extends StatelessWidget {
       title: 'The Developer Behind the Build',
       line:
           'A story of shipping production Flutter apps — clean code, clear UX, and steady delivery.',
+      narration: PortfolioContent.sceneNarrations[1],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

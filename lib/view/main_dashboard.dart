@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
+import 'package:portfolio_arivu/globals/voice_tts.dart';
 import 'package:portfolio_arivu/globals/water_animations.dart';
 import 'package:portfolio_arivu/globals/water_background.dart';
 import 'package:portfolio_arivu/view/about_me.dart';
@@ -39,6 +42,7 @@ class _MainDashBoardState extends State<MainDashBoard> {
   ];
 
   int menuIndex = 0;
+  bool _soundOn = SoundFx.instance.enabled;
 
   late final List<Widget> screensList = [
     const HomePage(),
@@ -83,6 +87,8 @@ class _MainDashBoardState extends State<MainDashBoard> {
   }
 
   Future<void> scrollTo({required int index}) async {
+    await VoiceTts.instance.stop();
+    SoundFx.instance.playWhoosh();
     await _itemScrollController.scrollTo(
       index: index,
       duration: const Duration(milliseconds: 1100),
@@ -90,6 +96,19 @@ class _MainDashBoardState extends State<MainDashBoard> {
     );
     if (!mounted) return;
     setState(() => menuIndex = index.clamp(0, _lastMenuIndex));
+    SoundFx.instance.playClick();
+  }
+
+  Future<void> _speakCurrentScene() async {
+    SoundFx.instance.playClick();
+    final scripts = PortfolioContent.sceneNarrations;
+    final i = menuIndex.clamp(0, scripts.length - 1);
+    final script = scripts[i];
+    if (VoiceTts.instance.isSpeakingText(script)) {
+      await VoiceTts.instance.stop();
+    } else {
+      await VoiceTts.instance.speak(script);
+    }
   }
 
   @override
@@ -134,48 +153,74 @@ class _MainDashBoardState extends State<MainDashBoard> {
           style: AppTextStyles.nameStyle(fontSize: isMobile ? 18 : 24),
           duration: const Duration(seconds: 5),
         ),
-        actions: isMobile
-            ? [
-                PopupMenuButton<int>(
-                  icon: Icon(
-                    Icons.menu_sharp,
-                    size: 28,
-                    color: AppColors.themeColor,
-                  ),
-                  color: AppColors.bgColor2,
-                  position: PopupMenuPosition.under,
-                  onSelected: (index) => scrollTo(index: index),
-                  itemBuilder: (context) => menuItems
-                      .asMap()
-                      .entries
-                      .map(
-                        (e) => PopupMenuItem<int>(
-                          value: e.key,
-                          child: Text(
-                            'SCENE 0${e.key + 1}  ${e.value}',
-                            style: AppTextStyles.headerTextStyle(),
-                          ),
-                        ),
-                      )
-                      .toList(),
+        actions: [
+          ListenableBuilder(
+            listenable: VoiceTts.instance,
+            builder: (context, _) {
+              final speaking = VoiceTts.instance.speaking;
+              return IconButton(
+                tooltip: speaking ? 'Stop narration' : 'Speak this scene',
+                onPressed: _speakCurrentScene,
+                icon: Icon(
+                  speaking
+                      ? Icons.stop_circle_outlined
+                      : Icons.record_voice_over_rounded,
+                  color: AppColors.themeColor,
                 ),
-                const SizedBox(width: 8),
-              ]
-            : [
-                Flexible(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    reverse: true,
-                    child: FilmProgressRail(
-                      total: menuItems.length,
-                      active: menuIndex,
-                      labels: menuItems,
-                      onSelect: (i) => scrollTo(index: i),
+              );
+            },
+          ),
+          IconButton(
+            tooltip: _soundOn ? 'Mute sound' : 'Unmute sound',
+            onPressed: () {
+              SoundFx.instance.toggle();
+              setState(() => _soundOn = SoundFx.instance.enabled);
+              if (_soundOn) SoundFx.instance.playClick();
+            },
+            icon: Icon(
+              _soundOn ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+              color: AppColors.themeColor,
+            ),
+          ),
+          if (isMobile)
+            PopupMenuButton<int>(
+              icon: Icon(
+                Icons.menu_sharp,
+                size: 28,
+                color: AppColors.themeColor,
+              ),
+              color: AppColors.bgColor2,
+              position: PopupMenuPosition.under,
+              onSelected: (index) => scrollTo(index: index),
+              itemBuilder: (context) => menuItems
+                  .asMap()
+                  .entries
+                  .map(
+                    (e) => PopupMenuItem<int>(
+                      value: e.key,
+                      child: Text(
+                        'SCENE 0${e.key + 1}  ${e.value}',
+                        style: AppTextStyles.headerTextStyle(),
+                      ),
                     ),
-                  ),
+                  )
+                  .toList(),
+            )
+          else
+            Flexible(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: FilmProgressRail(
+                  total: menuItems.length,
+                  active: menuIndex,
+                  labels: menuItems,
+                  onSelect: (i) => scrollTo(index: i),
                 ),
-                const SizedBox(width: 16),
-              ],
+              ),
+            ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: WaterBackground(
         child: ScrollablePositionedList.builder(

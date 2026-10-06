@@ -17,6 +17,7 @@ class SkillsPage extends StatelessWidget {
       act: 'Toolkit',
       title: 'The Stack Behind the Scenes',
       line: 'Tools and patterns that keep every production scene sharp.',
+      narration: PortfolioContent.sceneNarrations[2],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

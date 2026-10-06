@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_assets.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
 class MyCertificate extends StatelessWidget {
@@ -23,6 +25,7 @@ class MyCertificate extends StatelessWidget {
       act: 'Credentials',
       title: 'Proof in the Credits',
       line: 'Certificates that mark the craft behind the code.',
+      narration: PortfolioContent.sceneNarrations[3],
       child: GridView.builder(
         itemCount: _items.length,
         shrinkWrap: true,
@@ -37,6 +40,7 @@ class MyCertificate extends StatelessWidget {
           final item = _items[index];
           return InkWell(
             onTap: () {
+              SoundFx.instance.playClick();
               Navigator.push(
                 context,
                 MaterialPageRoute(

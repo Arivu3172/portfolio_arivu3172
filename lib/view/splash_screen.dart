@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -5,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_assets.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
+import 'package:portfolio_arivu/globals/voice_tts.dart';
 import 'package:portfolio_arivu/view/main_dashboard.dart';
 
 /// Opening title card — letterbox, slug, slow zoom, iris cut to portfolio.
@@ -103,13 +107,30 @@ class _SplashScreenState extends State<SplashScreen>
     _startSequence();
   }
 
+  Future<void> _cueSounds() async {
+    // Fire-and-forget cinematic cues timed to the title card.
+    unawaited(SoundFx.instance.playWhoosh());
+    await Future<void>.delayed(const Duration(milliseconds: 850));
+    if (!mounted) return;
+    unawaited(SoundFx.instance.playHit());
+    await Future<void>.delayed(const Duration(milliseconds: 900));
+    if (!mounted) return;
+    unawaited(SoundFx.instance.playChime());
+    await Future<void>.delayed(const Duration(milliseconds: 280));
+    if (!mounted) return;
+    unawaited(VoiceTts.instance.speak(PortfolioContent.splashNarration));
+  }
+
   Future<void> _startSequence() async {
+    unawaited(_cueSounds());
     await _master.forward();
     if (!mounted) return;
-    await Future<void>.delayed(const Duration(milliseconds: 450));
+    await Future<void>.delayed(const Duration(milliseconds: 1100));
     if (!mounted) return;
+    unawaited(SoundFx.instance.playWhoosh());
     await _exit.forward();
     if (!mounted) return;
+    unawaited(VoiceTts.instance.stop());
     Navigator.of(context).pushReplacement(
       PageRouteBuilder<void>(
         pageBuilder: (_, __, ___) => const CursorTracker(
@@ -144,7 +165,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: AnimatedBuilder(
+      // First tap unlocks audio on web browsers that block autoplay.
+      body: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) => SoundFx.instance.init(),
+        child: AnimatedBuilder(
         animation: Listenable.merge([_master, _grain, _exit]),
         builder: (context, _) {
           return Stack(
@@ -323,6 +348,7 @@ class _SplashScreenState extends State<SplashScreen>
             ],
           );
         },
+        ),
       ),
     );
   }

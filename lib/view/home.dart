@@ -6,6 +6,8 @@ import 'package:portfolio_arivu/globals/app_assets.dart';
 import 'package:portfolio_arivu/globals/app_button.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
+import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:portfolio_arivu/globals/water_animations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -205,7 +207,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ),
           ),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 16),
+        SpeakButton(text: PortfolioContent.sceneNarrations[0]),
+        const SizedBox(height: 22),
         Wrap(
           spacing: 12,
           runSpacing: 12,

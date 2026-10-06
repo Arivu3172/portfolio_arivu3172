@@ -159,6 +159,25 @@ class PortfolioContent {
       description: 'Scoped startup MVPs with clear milestones.',
     ),
   ];
+
+  static const splashNarration =
+      'Welcome. This is the portfolio of Arivazhagan A, Senior Flutter Developer. '
+      'A cinematic showcase of code, story, and motion.';
+
+  /// Narration scripts aligned with MainDashBoard menu indexes.
+  static const sceneNarrations = <String>[
+    'Scene one, Opening. I am Arivazhagan A, Senior Flutter Developer with over two years of experience. '
+        'I build production Flutter apps for Android, iOS, and web.',
+    'Scene two, Story. $aboutBody $aboutFocus',
+    'Scene three, Stack. My toolkit covers Flutter, Dart, state management, Firebase, REST APIs, '
+        'and shipping to Android, iOS, and web. Process: brief, design, build, and ship.',
+    'Scene four, Credits. Certified in Flutter and related craft — proof behind the production work.',
+    'Scene five, Work. Featured productions include Howdy, TimesMed Doctor and Patient, '
+        'TimesMed V K A, and Coding Style.',
+    'Scene six, Hire. Available for Flutter freelance — app development, feature work, '
+        'bug fixes, optimization, and MVP builds.',
+    'Scene seven, Contact. Let’s start the conversation. Reach out by email, LinkedIn, or GitHub.',
+  ];
 }
 
 class PortfolioStat {

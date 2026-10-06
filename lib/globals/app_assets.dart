@@ -9,4 +9,9 @@ class AppAssets {
   static const String project3 = 'assets/wall9.png';
   static const String project4 = 'assets/dev1.jpg';
   static const String resume = 'assets/resume.png';
+
+  static const String sfxClick = 'assets/sounds/click.wav';
+  static const String sfxWhoosh = 'assets/sounds/whoosh.wav';
+  static const String sfxHit = 'assets/sounds/hit.wav';
+  static const String sfxChime = 'assets/sounds/chime.wav';
 }

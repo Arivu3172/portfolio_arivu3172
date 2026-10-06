@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
+import 'package:portfolio_arivu/globals/voice_tts.dart';
 import 'package:portfolio_arivu/view/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SoundFx.instance.init();
+  await VoiceTts.instance.init();
   runApp(const MyApp());
 }
 

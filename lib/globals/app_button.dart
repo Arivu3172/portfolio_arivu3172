@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
 class AppButtons {
@@ -8,7 +9,10 @@ class AppButtons {
     required VoidCallback onTap,
   }) {
     return MaterialButton(
-      onPressed: onTap,
+      onPressed: () {
+        SoundFx.instance.playClick();
+        onTap();
+      },
       color: AppColors.themeColor,
       splashColor: AppColors.lawGreen,
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),

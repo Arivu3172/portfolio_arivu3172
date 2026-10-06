@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
+import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:portfolio_arivu/globals/water_animations.dart';
 
@@ -13,6 +14,7 @@ class CinematicScene extends StatefulWidget {
     required this.title,
     required this.child,
     this.line,
+    this.narration,
     this.minHeightFactor = 0.92,
     this.padHorizontal,
   });
@@ -21,6 +23,8 @@ class CinematicScene extends StatefulWidget {
   final String act;
   final String title;
   final String? line;
+  /// Optional TTS script. Defaults to title + line when null.
+  final String? narration;
   final Widget child;
   final double minHeightFactor;
   final double? padHorizontal;
@@ -152,6 +156,15 @@ class _CinematicSceneState extends State<CinematicScene>
                           ),
                         ),
                       ],
+                      const SizedBox(height: 14),
+                      SpeakButton(
+                        text: widget.narration ??
+                            [
+                              'Scene ${widget.sceneNo}. ${widget.act}.',
+                              widget.title,
+                              if (widget.line != null) widget.line!,
+                            ].join(' '),
+                      ),
                       const SizedBox(height: 28),
                       widget.child,
                     ],

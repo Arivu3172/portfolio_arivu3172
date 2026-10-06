@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
+import 'package:portfolio_arivu/globals/sound_fx.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
 class FooterClass extends StatelessWidget {
@@ -47,7 +48,10 @@ class FooterClass extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: onScrollToTop,
+            onTap: () {
+              SoundFx.instance.playWhoosh();
+              onScrollToTop?.call();
+            },
             child: Container(
               height: 42,
               width: 42,

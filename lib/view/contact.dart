@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio_arivu/globals/app_button.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,6 +58,7 @@ class _ContactUsState extends State<ContactUs> {
       act: 'Final Frame',
       title: 'Start the Conversation',
       line: 'The next scene could be yours — freelance or full-time.',
+      narration: PortfolioContent.sceneNarrations[6],
       child: narrow
           ? Column(
               children: [
