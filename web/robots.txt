@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://arivu-portfolio.web.app/sitemap.xml
