@@ -29,10 +29,18 @@ class FooterClass extends StatelessWidget {
                 Text('END CREDITS', style: AppTextStyles.indexStyle()),
                 const SizedBox(height: 8),
                 Text(
-                  'Code · Story · Motion',
+                  'Arivazhagan A  ·  Flutter Developer',
                   style: AppTextStyles.normalStyle(
                     color: AppColors.white.withValues(alpha: 0.7),
                     fontSize: 13,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Code · Story · Motion · Ship',
+                  style: AppTextStyles.normalStyle(
+                    color: AppColors.white.withValues(alpha: 0.45),
+                    fontSize: 12,
                   ),
                 ),
               ],

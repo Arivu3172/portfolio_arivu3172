@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio_arivu/globals/app_button.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,44 +25,38 @@ class FreelancingPage extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final count = width < 700 ? 1 : 2;
 
-    const services = [
-      _ServiceItem(
-        icon: FontAwesomeIcons.mobileScreenButton,
-        title: 'Flutter App Development',
-        description: 'Android, iOS, and web apps from UI to release.',
-      ),
-      _ServiceItem(
-        icon: FontAwesomeIcons.code,
-        title: 'Feature & API Work',
-        description: 'Auth, REST, Firebase, and complex product flows.',
-      ),
-      _ServiceItem(
-        icon: FontAwesomeIcons.bug,
-        title: 'Bug Fix & Optimization',
-        description: 'Stabilize apps, improve speed, and clean code.',
-      ),
-      _ServiceItem(
-        icon: FontAwesomeIcons.rocket,
-        title: 'MVP Builds',
-        description: 'Scoped startup MVPs with clear milestones.',
-      ),
+    const icons = [
+      FontAwesomeIcons.mobileScreenButton,
+      FontAwesomeIcons.code,
+      FontAwesomeIcons.bug,
+      FontAwesomeIcons.rocket,
     ];
 
     return CinematicScene(
-      sceneNo: '05',
+      sceneNo: '06',
       act: 'Collaboration',
       title: 'Let’s Build the Next Scene',
       line: 'Available for Flutter freelance — hourly or fixed scope.',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'From MVP to production polish — clear scope, weekly updates, and code you can own.',
+            style: AppTextStyles.normalStyle(
+              color: AppColors.white.withValues(alpha: 0.78),
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 18),
           AppButtons.buildMaterialButton(
             buttonName: 'Hire Me',
             onTap: _hireMe,
           ),
           const SizedBox(height: 24),
+          Text('SERVICES', style: AppTextStyles.indexStyle()),
+          const SizedBox(height: 12),
           GridView.builder(
-            itemCount: services.length,
+            itemCount: PortfolioContent.services.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -71,7 +66,7 @@ class FreelancingPage extends StatelessWidget {
               crossAxisSpacing: 14,
             ),
             itemBuilder: (context, index) {
-              final item = services[index];
+              final item = PortfolioContent.services[index];
               return Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -83,7 +78,7 @@ class FreelancingPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FaIcon(item.icon, color: AppColors.themeColor, size: 18),
+                    FaIcon(icons[index], color: AppColors.themeColor, size: 18),
                     const SizedBox(height: 12),
                     Text(
                       item.title,
@@ -105,20 +100,43 @@ class FreelancingPage extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(height: 24),
+          Text('ENGAGEMENT', style: AppTextStyles.indexStyle()),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: const [
+              _EngageChip(label: 'Hourly'),
+              _EngageChip(label: 'Fixed scope'),
+              _EngageChip(label: 'Weekly demos'),
+              _EngageChip(label: 'Source handover'),
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-class _ServiceItem {
-  const _ServiceItem({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
+class _EngageChip extends StatelessWidget {
+  const _EngageChip({required this.label});
 
-  final IconData icon;
-  final String title;
-  final String description;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.themeColor.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Text(
+        label,
+        style: AppTextStyles.headerTextStyle(color: AppColors.themeColor),
+      ),
+    );
+  }
 }

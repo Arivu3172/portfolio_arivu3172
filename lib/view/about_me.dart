@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_assets.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
 class AboutMe extends StatelessWidget {
@@ -20,8 +21,10 @@ class AboutMe extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _StatsRow(wide: wide),
+          const SizedBox(height: 24),
           if (!wide) ...[
-            _AboutPhoto(size: 140),
+            const _AboutPhoto(size: 140),
             const SizedBox(height: 20),
           ],
           if (wide)
@@ -30,54 +33,97 @@ class AboutMe extends StatelessWidget {
               children: [
                 const _AboutPhoto(size: 200),
                 const SizedBox(width: 28),
-                Expanded(child: _aboutText()),
+                Expanded(child: _aboutCopy()),
               ],
             )
           else
-            _aboutText(),
-          const SizedBox(height: 22),
+            _aboutCopy(),
+          const SizedBox(height: 26),
           Text('EXPERIENCE', style: AppTextStyles.indexStyle()),
           const SizedBox(height: 12),
-          const _ExpRow(
-            role: 'Flutter Developer',
-            detail:
-                'Howdy · TimesMed Doctor & Patient · TimesMed VKA · Coding Style',
-          ),
-          const SizedBox(height: 8),
-          const _ExpRow(
-            role: 'Core work',
-            detail: 'UI, auth, APIs, Firebase, performance & release support',
-          ),
-          const SizedBox(height: 22),
-          Text('SKILLS', style: AppTextStyles.indexStyle()),
+          for (final exp in PortfolioContent.experience) ...[
+            _ExpRow(
+              role: exp.role,
+              org: exp.org,
+              detail: exp.detail,
+            ),
+            const SizedBox(height: 10),
+          ],
           const SizedBox(height: 12),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: const [
-              _SkillChip(label: 'Flutter'),
-              _SkillChip(label: 'Dart'),
-              _SkillChip(label: 'Firebase'),
-              _SkillChip(label: 'REST API'),
-              _SkillChip(label: 'State Management'),
-              _SkillChip(label: 'Android'),
-              _SkillChip(label: 'iOS'),
-              _SkillChip(label: 'Web'),
-            ],
-          ),
+          Text('EDUCATION', style: AppTextStyles.indexStyle()),
+          const SizedBox(height: 12),
+          for (final item in PortfolioContent.education) ...[
+            _ExpRow(role: item.title, org: '', detail: item.meta),
+            const SizedBox(height: 10),
+          ],
         ],
       ),
     );
   }
 
-  Widget _aboutText() {
-    return Text(
-      'Flutter developer with 2+ years of production experience. '
-      'I deliver mobile and web apps with clean Dart code, solid '
-      'state management, and stable API / Firebase integrations.',
-      style: AppTextStyles.normalStyle(
-        color: AppColors.white.withValues(alpha: 0.85),
-      ),
+  Widget _aboutCopy() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          PortfolioContent.aboutBody,
+          style: AppTextStyles.normalStyle(
+            color: AppColors.white.withValues(alpha: 0.85),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          PortfolioContent.aboutFocus,
+          style: AppTextStyles.normalStyle(
+            color: AppColors.white.withValues(alpha: 0.65),
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _StatsRow extends StatelessWidget {
+  const _StatsRow({required this.wide});
+
+  final bool wide;
+
+  @override
+  Widget build(BuildContext context) {
+    final stats = PortfolioContent.stats;
+    return Wrap(
+      spacing: wide ? 18 : 12,
+      runSpacing: 12,
+      children: [
+        for (final s in stats)
+          Container(
+            width: wide ? 140 : 120,
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.themeColor.withValues(alpha: 0.4),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  s.value,
+                  style: AppTextStyles.nameStyle(fontSize: wide ? 28 : 22),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  s.label.toUpperCase(),
+                  style: AppTextStyles.indexStyle().copyWith(
+                    fontSize: 10,
+                    color: AppColors.white.withValues(alpha: 0.55),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
@@ -105,9 +151,14 @@ class _AboutPhoto extends StatelessWidget {
 }
 
 class _ExpRow extends StatelessWidget {
-  const _ExpRow({required this.role, required this.detail});
+  const _ExpRow({
+    required this.role,
+    required this.org,
+    required this.detail,
+  });
 
   final String role;
+  final String org;
   final String detail;
 
   @override
@@ -123,48 +174,40 @@ class _ExpRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: RichText(
-            text: TextSpan(
-              text: '$role  ',
-              style: AppTextStyles.montserratStyle(
-                color: AppColors.themeColor,
-                fontSize: 14,
-              ),
-              children: [
-                TextSpan(
-                  text: detail,
-                  style: AppTextStyles.normalStyle(
-                    color: AppColors.white.withValues(alpha: 0.8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: role,
+                  style: AppTextStyles.montserratStyle(
+                    color: AppColors.themeColor,
                     fontSize: 14,
                   ),
+                  children: [
+                    if (org.isNotEmpty)
+                      TextSpan(
+                        text: '  ·  $org',
+                        style: AppTextStyles.normalStyle(
+                          color: AppColors.white.withValues(alpha: 0.8),
+                          fontSize: 14,
+                        ),
+                      ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                detail,
+                style: AppTextStyles.normalStyle(
+                  color: AppColors.white.withValues(alpha: 0.68),
+                  fontSize: 13,
+                ),
+              ),
+            ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class _SkillChip extends StatelessWidget {
-  const _SkillChip({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AppColors.themeColor.withValues(alpha: 0.55),
-        ),
-      ),
-      child: Text(
-        label,
-        style: AppTextStyles.headerTextStyle(color: AppColors.themeColor),
-      ),
     );
   }
 }

@@ -19,7 +19,7 @@ class MyCertificate extends StatelessWidget {
     final count = width < 700 ? 1 : (width < 1100 ? 2 : 3);
 
     return CinematicScene(
-      sceneNo: '03',
+      sceneNo: '04',
       act: 'Credentials',
       title: 'Proof in the Credits',
       line: 'Certificates that mark the craft behind the code.',

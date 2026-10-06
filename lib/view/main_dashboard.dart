@@ -11,6 +11,7 @@ import 'package:portfolio_arivu/view/freelancing.dart';
 import 'package:portfolio_arivu/view/home.dart';
 import 'package:portfolio_arivu/view/my_certificate.dart';
 import 'package:portfolio_arivu/view/my_project.dart';
+import 'package:portfolio_arivu/view/skills_page.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MainDashBoard extends StatefulWidget {
@@ -30,6 +31,7 @@ class _MainDashBoardState extends State<MainDashBoard> {
   final menuItems = <String>[
     'Opening',
     'Story',
+    'Stack',
     'Credits',
     'Work',
     'Hire',
@@ -41,12 +43,15 @@ class _MainDashBoardState extends State<MainDashBoard> {
   late final List<Widget> screensList = [
     const HomePage(),
     const AboutMe(),
+    const SkillsPage(),
     const MyCertificate(),
     const MyProject(),
     const FreelancingPage(),
     const ContactUs(),
     FooterClass(onScrollToTop: () => scrollTo(index: 0)),
   ];
+
+  int get _lastMenuIndex => menuItems.length - 1;
 
   @override
   void initState() {
@@ -70,7 +75,8 @@ class _MainDashBoardState extends State<MainDashBoard> {
       if (prev == null) return p;
       return p.itemLeadingEdge > prev.itemLeadingEdge ? p : prev;
     });
-    final next = (best?.index ?? positions.first.index).clamp(0, 5);
+    final next =
+        (best?.index ?? positions.first.index).clamp(0, _lastMenuIndex);
     if (next != menuIndex && mounted) {
       setState(() => menuIndex = next);
     }
@@ -83,7 +89,7 @@ class _MainDashBoardState extends State<MainDashBoard> {
       curve: Curves.easeInOutCubic,
     );
     if (!mounted) return;
-    setState(() => menuIndex = index.clamp(0, 5));
+    setState(() => menuIndex = index.clamp(0, _lastMenuIndex));
   }
 
   @override
