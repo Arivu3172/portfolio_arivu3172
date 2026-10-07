@@ -60,10 +60,9 @@ class _ProfileAnimationState extends State<ProfileAnimation>
       ),
     ],
 
-        image: DecorationImage(image: AssetImage(AppAssets.profile1),
-         
-         
-         fit: BoxFit.fill,
+        image: DecorationImage(
+          image: AssetImage(AppAssets.profile),
+          fit: BoxFit.fill,
       
         
         )

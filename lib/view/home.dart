@@ -10,6 +10,7 @@ import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:portfolio_arivu/globals/water_animations.dart';
+import 'package:portfolio_arivu/view/hacker_resume.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -229,7 +230,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const ResumePage()),
+                  PageRouteBuilder<void>(
+                    pageBuilder: (_, __, ___) => const HackerResumePage(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeOutCubic,
+                        ),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -376,19 +388,3 @@ class _GoldSlashPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class ResumePage extends StatelessWidget {
-  const ResumePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgColor,
-      appBar: AppBar(
-        title: Text('Resume', style: AppTextStyles.headerTextStyle()),
-        backgroundColor: AppColors.bgColor2,
-        foregroundColor: AppColors.themeColor,
-      ),
-      body: Center(child: Image.asset('assets/resume.png')),
-    );
-  }
-}
