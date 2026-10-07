@@ -33,11 +33,11 @@ class FreelancingPage extends StatelessWidget {
     ];
 
     return CinematicScene(
-      sceneNo: '06',
+      sceneNo: '05',
       act: 'Collaboration',
       title: 'Let’s Build the Next Scene',
       line: 'Available for Flutter freelance — hourly or fixed scope.',
-      narration: PortfolioContent.sceneNarrations[5],
+      narration: PortfolioContent.sceneNarrations[4],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -54,11 +54,11 @@ class _ContactUsState extends State<ContactUs> {
     final narrow = MediaQuery.sizeOf(context).width < 900;
 
     return CinematicScene(
-      sceneNo: '07',
+      sceneNo: '06',
       act: 'Final Frame',
       title: 'Start the Conversation',
       line: 'The next scene could be yours — freelance or full-time.',
-      narration: PortfolioContent.sceneNarrations[6],
+      narration: PortfolioContent.sceneNarrations[5],
       child: narrow
           ? Column(
               children: [

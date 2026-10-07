@@ -171,12 +171,11 @@ class PortfolioContent {
     'Scene two, Story. $aboutBody $aboutFocus',
     'Scene three, Stack. My toolkit covers Flutter, Dart, state management, Firebase, REST APIs, '
         'and shipping to Android, iOS, and web. Process: brief, design, build, and ship.',
-    'Scene four, Credits. Certified in Flutter and related craft — proof behind the production work.',
-    'Scene five, Work. Featured productions include Howdy, TimesMed Doctor and Patient, '
+    'Scene four, Work. Featured productions include Howdy, TimesMed Doctor and Patient, '
         'TimesMed V K A, and Coding Style.',
-    'Scene six, Hire. Available for Flutter freelance — app development, feature work, '
+    'Scene five, Hire. Available for Flutter freelance — app development, feature work, '
         'bug fixes, optimization, and MVP builds.',
-    'Scene seven, Contact. Let’s start the conversation. Reach out by email, LinkedIn, or GitHub.',
+    'Scene six, Contact. Let’s start the conversation. Reach out by email, LinkedIn, or GitHub.',
   ];
 }
 

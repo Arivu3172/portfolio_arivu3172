@@ -8,7 +8,7 @@ void main() {
   });
 
   test('App assets point to the assets folder', () {
-    expect(AppAssets.certificate1, startsWith('assets/'));
+
     expect(AppAssets.resume, 'assets/resume.png');
   });
 }

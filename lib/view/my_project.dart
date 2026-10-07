@@ -23,11 +23,11 @@ class _MyProjectState extends State<MyProject> {
     final projects = PortfolioContent.projects;
 
     return CinematicScene(
-      sceneNo: '05',
+      sceneNo: '04',
       act: 'Feature Presentation',
       title: 'Stories Shipped in Code',
       line: 'Selected productions — each one a scene of product, UI, and craft.',
-      narration: PortfolioContent.sceneNarrations[4],
+      narration: PortfolioContent.sceneNarrations[3],
       child: GridView.builder(
         itemCount: projects.length,
         shrinkWrap: true,

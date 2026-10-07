@@ -12,7 +12,6 @@ import 'package:portfolio_arivu/view/contact.dart';
 import 'package:portfolio_arivu/view/footer_class.dart';
 import 'package:portfolio_arivu/view/freelancing.dart';
 import 'package:portfolio_arivu/view/home.dart';
-import 'package:portfolio_arivu/view/my_certificate.dart';
 import 'package:portfolio_arivu/view/my_project.dart';
 import 'package:portfolio_arivu/view/skills_page.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -35,7 +34,6 @@ class _MainDashBoardState extends State<MainDashBoard> {
     'Opening',
     'Story',
     'Stack',
-    'Credits',
     'Work',
     'Hire',
     'Contact',
@@ -48,7 +46,6 @@ class _MainDashBoardState extends State<MainDashBoard> {
     const HomePage(),
     const AboutMe(),
     const SkillsPage(),
-    const MyCertificate(),
     const MyProject(),
     const FreelancingPage(),
     const ContactUs(),
