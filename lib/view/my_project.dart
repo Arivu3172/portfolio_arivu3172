@@ -49,86 +49,68 @@ class _MyProjectState extends State<MyProject> {
             onExit: (_) => setState(() => hoveredIndex = null),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 220),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
+                color: Colors.black,
                 border: Border.all(
                   color: hover ? accent : accent.withValues(alpha: 0.35),
                 ),
               ),
-              child: Stack(
-                fit: StackFit.expand,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(project.image, fit: BoxFit.cover),
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withValues(alpha: 0.9),
-                        ],
+                  Text(
+                    '${project.year}  ·  ${project.platforms}',
+                    style: AppTextStyles.indexStyle().copyWith(
+                      fontSize: 10,
+                      color: AppColors.white.withValues(alpha: 0.55),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  CursorTintText(
+                    project.title,
+                    coding: isCoding || hover,
+                    style: AppTextStyles.montserratStyle(
+                      color: AppColors.themeColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Text(
+                      hover ? project.description : project.role,
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.normalStyle(
+                        color: AppColors.white.withValues(alpha: 0.85),
+                        fontSize: 13,
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${project.year}  ·  ${project.platforms}',
-                          style: AppTextStyles.indexStyle().copyWith(
-                            fontSize: 10,
-                            color: AppColors.white.withValues(alpha: 0.55),
+                  ),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [
+                      for (final tag in project.tags)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: accent.withValues(alpha: 0.45),
+                            ),
+                          ),
+                          child: Text(
+                            tag,
+                            style: AppTextStyles.indexStyle().copyWith(
+                              fontSize: 9,
+                              letterSpacing: 1.2,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 6),
-                        CursorTintText(
-                          project.title,
-                          coding: isCoding || hover,
-                          style: AppTextStyles.montserratStyle(
-                            color: AppColors.themeColor,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          hover ? project.description : project.role,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.normalStyle(
-                            color: AppColors.white.withValues(alpha: 0.85),
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
-                          children: [
-                            for (final tag in project.tags)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: accent.withValues(alpha: 0.45),
-                                  ),
-                                ),
-                                child: Text(
-                                  tag,
-                                  style: AppTextStyles.indexStyle().copyWith(
-                                    fontSize: 9,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
                 ],
               ),

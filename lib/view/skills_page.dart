@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/hover_text.dart';
 import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
@@ -55,22 +56,28 @@ class SkillsPage extends StatelessWidget {
                         runSpacing: 8,
                         children: [
                           for (final item in group.items)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.themeColor
-                                      .withValues(alpha: 0.45),
+                            HoverGlow(
+                              scale: 1.06,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
                                 ),
-                              ),
-                              child: Text(
-                                item,
-                                style: AppTextStyles.headerTextStyle(
-                                  color: AppColors.themeColor,
-                                ).copyWith(fontSize: 12, letterSpacing: 0.6),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.themeColor
+                                        .withValues(alpha: 0.45),
+                                  ),
+                                ),
+                                child: HoverText(
+                                  item,
+                                  underline: false,
+                                  scale: 1.0,
+                                  letterSpacingBoost: 1.0,
+                                  style: AppTextStyles.headerTextStyle(
+                                    color: AppColors.themeColor,
+                                  ).copyWith(fontSize: 12, letterSpacing: 0.6),
+                                ),
                               ),
                             ),
                         ],

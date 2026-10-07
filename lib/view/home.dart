@@ -7,6 +7,7 @@ import 'package:portfolio_arivu/globals/app_button.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
 import 'package:portfolio_arivu/globals/portfolio_content.dart';
+import 'package:portfolio_arivu/globals/hover_text.dart';
 import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:portfolio_arivu/globals/water_animations.dart';
@@ -163,22 +164,30 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        HoverText(
           'SCENE 01  ·  OPENING TITLE',
+          underline: false,
+          scale: 1.05,
+          letterSpacingBoost: 1.2,
           style: AppTextStyles.indexStyle().copyWith(
             letterSpacing: 3.2,
             color: accent,
           ),
         ),
         const SizedBox(height: 18),
-        ShimmerText(
-          text: 'ARIVAZHAGAN A',
-          style: AppTextStyles.nameStyle(fontSize: wide ? 52 : 32),
+        HoverGlow(
+          scale: 1.02,
+          child: ShimmerText(
+            text: 'ARIVAZHAGAN A',
+            style: AppTextStyles.nameStyle(fontSize: wide ? 52 : 32),
+          ),
         ),
         const SizedBox(height: 10),
-        CursorTintText(
+        HoverText(
           'Senior Flutter Developer  ·  2+ Years',
-          coding: true,
+          underline: true,
+          scale: 1.03,
+          letterSpacingBoost: 1.0,
           style: AppTextStyles.montserratStyle(
             color: AppColors.themeColor,
             fontSize: wide ? 18 : 15,
@@ -187,9 +196,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         const SizedBox(height: 20),
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: wide ? 560 : 520),
-          child: Text(
+          child: HoverText(
             'A cinematic portfolio where code meets storytelling, '
             'design meets motion, and every scroll feels like a scene.',
+            underline: false,
+            scale: 1.01,
+            letterSpacingBoost: 0.3,
             style: AppTextStyles.normalStyle(
               color: AppColors.white.withValues(alpha: 0.82),
               fontSize: wide ? 16 : 14,
@@ -199,9 +211,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         const SizedBox(height: 12),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 480),
-          child: Text(
+          child: HoverText(
             'Production Flutter for Android, iOS, and web — '
             'clean architecture, sharp UI, reliable delivery.',
+            underline: false,
+            scale: 1.01,
+            letterSpacingBoost: 0.3,
             style: AppTextStyles.normalStyle(
               color: AppColors.white.withValues(alpha: 0.62),
               fontSize: 13,

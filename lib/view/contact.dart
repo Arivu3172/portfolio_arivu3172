@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio_arivu/globals/app_button.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cinematic_scene.dart';
+import 'package:portfolio_arivu/globals/hover_text.dart';
 import 'package:portfolio_arivu/globals/portfolio_content.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -197,14 +198,23 @@ class _InfoTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  HoverText(
                     title,
+                    underline: true,
+                    scale: 1.04,
+                    letterSpacingBoost: 1.2,
                     style: AppTextStyles.headerTextStyle(
                       color: AppColors.themeColor,
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(value, style: AppTextStyles.normalStyle(fontSize: 13)),
+                  HoverText(
+                    value,
+                    underline: false,
+                    scale: 1.02,
+                    letterSpacingBoost: 0.4,
+                    style: AppTextStyles.normalStyle(fontSize: 13),
+                  ),
                 ],
               ),
             ),

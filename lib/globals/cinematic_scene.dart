@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
+import 'package:portfolio_arivu/globals/hover_text.dart';
 import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
-import 'package:portfolio_arivu/globals/water_animations.dart';
 
 /// Full-viewport film scene: letterbox, slug, staggered entrance.
 class CinematicScene extends StatefulWidget {
@@ -136,9 +136,11 @@ class _CinematicSceneState extends State<CinematicScene>
                         accent: accent,
                       ),
                       const SizedBox(height: 18),
-                      CursorTintText(
+                      HoverText(
                         widget.title,
-                        coding: true,
+                        underline: true,
+                        scale: 1.02,
+                        letterSpacingBoost: 1.5,
                         style: AppTextStyles.headingStyles(
                           fontSize: size.width < 700 ? 28 : 36,
                         ),
@@ -147,8 +149,11 @@ class _CinematicSceneState extends State<CinematicScene>
                         const SizedBox(height: 10),
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 560),
-                          child: Text(
+                          child: HoverText(
                             widget.line!,
+                            underline: false,
+                            scale: 1.01,
+                            letterSpacingBoost: 0.4,
                             style: AppTextStyles.normalStyle(
                               color: AppColors.white.withValues(alpha: 0.72),
                               fontSize: 15,
@@ -196,8 +201,11 @@ class _SceneSlug extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        HoverText(
           'SCENE $sceneNo',
+          underline: false,
+          scale: 1.06,
+          letterSpacingBoost: 1.5,
           style: AppTextStyles.indexStyle().copyWith(
             letterSpacing: 3,
             color: accent,
@@ -215,8 +223,11 @@ class _SceneSlug extends StatelessWidget {
           },
         ),
         const SizedBox(width: 14),
-        Text(
+        HoverText(
           act.toUpperCase(),
+          underline: true,
+          scale: 1.04,
+          letterSpacingBoost: 1.8,
           style: AppTextStyles.headerTextStyle(
             color: AppColors.white.withValues(alpha: 0.55),
           ),
@@ -252,28 +263,21 @@ class FilmProgressRail extends StatelessWidget {
         final selected = i == active;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: InkWell(
+          child: HoverText(
+            labels[i].toUpperCase(),
+            underline: !selected,
+            scale: 1.06,
+            letterSpacingBoost: 1.4,
+            playClick: true,
             onTap: () => onSelect(i),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 280),
-              curve: Curves.easeOutCubic,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: selected ? accent : Colors.transparent,
-                    width: 1.5,
-                  ),
-                ),
-              ),
-              child: Text(
-                labels[i].toUpperCase(),
-                style: AppTextStyles.headerTextStyle(
-                  color: selected
-                      ? accent
-                      : AppColors.white.withValues(alpha: 0.7),
-                ),
-              ),
+            style: AppTextStyles.headerTextStyle(
+              color: selected
+                  ? accent
+                  : AppColors.white.withValues(alpha: 0.7),
+            ).copyWith(
+              decoration: selected ? TextDecoration.underline : null,
+              decorationColor: accent,
+              decorationThickness: 1.5,
             ),
           ),
         );
