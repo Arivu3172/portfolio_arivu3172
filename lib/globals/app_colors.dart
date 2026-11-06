@@ -1,53 +1,49 @@
 import 'package:flutter/material.dart';
 
+/// Aurora studio palette: ink navy, electric cyan, soft violet.
 class AppColors {
-  /// Pure black base
-  static const Color bgColor = Color(0xFF0A0A0A);
+  static const Color bgColor = Color(0xFF070B16);
+  static const Color bgColor2 = Color(0xFF12182A);
 
-  /// Soft charcoal panel
-  static const Color bgColor2 = Color(0xFF161616);
+  /// Primary cyan
+  static const Color themeColor = Color(0xFF5EEAD4);
 
-  /// Primary gold accent
-  static const Color themeColor = Color(0xFFD4AF37);
+  /// Secondary violet
+  static const Color aqua = Color(0xFFA78BFA);
 
-  /// Rich amber gold (hover / secondary)
-  static const Color aqua = Color(0xFFB8860B);
+  /// Mint highlight
+  static const Color lawGreen = Color(0xFF99F6E4);
 
-  /// Light champagne gold for splash / highlight
-  static const Color lawGreen = Color(0xFFF5E6A3);
+  /// Soft lilac
+  static const Color robinEdgeBlue = Color(0xFFC4B5FD);
 
-  /// Bright title gold
-  static const Color robinEdgeBlue = Color(0xFFE8C547);
+  static const Color white = Color(0xFFF4F7FB);
 
-  static const Color white = Color(0xFFFFFFFF);
+  static const Color waveDeep = Color(0xFF0B1220);
+  static const Color waveMid = Color(0xFF152038);
+  static const Color waveLight = Color(0xFF243352);
 
-  /// Layer tones (kept names for existing widgets)
-  static const Color waveDeep = Color(0xFF111111);
-  static const Color waveMid = Color(0xFF1C1C1C);
-  static const Color waveLight = Color(0xFF2A2A2A);
-
-  /// Glass panel fill
-  static const Color glass = Color(0x33D4AF37);
+  static const Color glass = Color(0x335EEAD4);
 
   static const LinearGradient oceanGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFF000000),
-      Color(0xFF121212),
-      Color(0xFF1A1408),
-      Color(0xFF000000),
+      Color(0xFF070B16),
+      Color(0xFF10182C),
+      Color(0xFF1A1440),
+      Color(0xFF071018),
     ],
-    stops: [0.0, 0.35, 0.7, 1.0],
+    stops: [0.0, 0.38, 0.72, 1.0],
   );
 
   static const LinearGradient foamGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xCCD4AF37),
-      Color(0x99B8860B),
-      Color(0xE60A0A0A),
+      Color(0xCC5EEAD4),
+      Color(0x99A78BFA),
+      Color(0xE6070B16),
     ],
   );
 
@@ -55,10 +51,10 @@ class AppColors {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFFF5E6A3),
-      Color(0xFFD4AF37),
-      Color(0xFFB8860B),
-      Color(0xFFD4AF37),
+      Color(0xFF99F6E4),
+      Color(0xFF5EEAD4),
+      Color(0xFFA78BFA),
+      Color(0xFF5EEAD4),
     ],
   );
 }

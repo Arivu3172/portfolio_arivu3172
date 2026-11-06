@@ -24,9 +24,9 @@ class _MyProjectState extends State<MyProject> {
 
     return CinematicScene(
       sceneNo: '04',
-      act: 'Feature Presentation',
-      title: 'Stories Shipped in Code',
-      line: 'Selected productions — each one a scene of product, UI, and craft.',
+      act: 'Projects',
+      title: 'Selected Work',
+      line: 'Apps I have shipped — product, UI, and engineering.',
       narration: PortfolioContent.sceneNarrations[3],
       child: GridView.builder(
         itemCount: projects.length,
@@ -51,7 +51,8 @@ class _MyProjectState extends State<MyProject> {
               duration: const Duration(milliseconds: 220),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: AppColors.bgColor,
+                borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: hover ? accent : accent.withValues(alpha: 0.35),
                 ),

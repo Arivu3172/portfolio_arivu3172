@@ -14,10 +14,10 @@ class AboutMe extends StatelessWidget {
 
     return CinematicScene(
       sceneNo: '02',
-      act: 'Character Study',
+      act: 'About',
       title: 'The Developer Behind the Build',
       line:
-          'A story of shipping production Flutter apps — clean code, clear UX, and steady delivery.',
+          'Shipping production Flutter apps — clean code, clear UX, and steady delivery.',
       narration: PortfolioContent.sceneNarrations[1],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +102,8 @@ class _StatsRow extends StatelessWidget {
             width: wide ? 140 : 120,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
+              color: AppColors.bgColor2.withValues(alpha: 0.7),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: AppColors.themeColor.withValues(alpha: 0.4),
               ),
@@ -139,7 +141,9 @@ class _AboutPhoto extends StatelessWidget {
     return Container(
       width: size,
       height: size * 1.25,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: AppColors.themeColor.withValues(alpha: 0.8)),
         image: const DecorationImage(
           image: AssetImage(AppAssets.profile),

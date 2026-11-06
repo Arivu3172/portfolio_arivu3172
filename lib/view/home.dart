@@ -78,21 +78,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       height: math.max(size.height * 0.96, 560),
       child: Stack(
         children: [
-          // Letterbox bars
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 28,
-            child: Container(color: Colors.black.withValues(alpha: 0.85)),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 28,
-            child: Container(color: Colors.black.withValues(alpha: 0.9)),
-          ),
           Positioned(
             right: wide ? -40 : -20,
             bottom: wide ? 60 : 40,
@@ -104,11 +89,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   style: AppTextStyles.nameStyle(fontSize: wide ? 220 : 130),
                 ),
               ),
-            ),
-          ),
-          Positioned.fill(
-            child: IgnorePointer(
-              child: CustomPaint(painter: _GoldSlashPainter()),
             ),
           ),
           Padding(
@@ -165,14 +145,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HoverText(
-          'SCENE 01  ·  OPENING TITLE',
+          'Flutter Developer',
           underline: false,
           scale: 1.05,
-          letterSpacingBoost: 1.2,
-          style: AppTextStyles.indexStyle().copyWith(
-            letterSpacing: 3.2,
-            color: accent,
-          ),
+          letterSpacingBoost: 0.6,
+          style: AppTextStyles.indexStyle().copyWith(color: accent),
         ),
         const SizedBox(height: 18),
         HoverGlow(
@@ -197,8 +174,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: wide ? 560 : 520),
           child: HoverText(
-            'A cinematic portfolio where code meets storytelling, '
-            'design meets motion, and every scroll feels like a scene.',
+            'I build Flutter apps for Android, iOS, and web — '
+            'clear UI, solid architecture, and reliable delivery.',
             underline: false,
             scale: 1.01,
             letterSpacingBoost: 0.3,
@@ -301,7 +278,9 @@ class _ProfilePortrait extends StatelessWidget {
     return Container(
       width: size * 0.78,
       height: size,
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
         border: Border.all(color: AppColors.themeColor, width: 1.4),
         boxShadow: [
           BoxShadow(
@@ -362,44 +341,17 @@ class _SocialSquare extends StatelessWidget {
       height: 46,
       alignment: Alignment.center,
       decoration: BoxDecoration(
+        shape: BoxShape.circle,
         color: hover ? AppColors.themeColor : Colors.transparent,
         border: Border.all(color: AppColors.themeColor, width: 1.2),
       ),
       child: FaIcon(
         icon,
         size: 18,
-        color: hover ? Colors.black : AppColors.themeColor,
+        color: hover ? AppColors.bgColor : AppColors.themeColor,
       ),
     );
   }
 }
 
-class _GoldSlashPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..moveTo(size.width * 0.72, 0)
-      ..lineTo(size.width, 0)
-      ..lineTo(size.width * 0.55, size.height)
-      ..lineTo(size.width * 0.42, size.height)
-      ..close();
-
-    canvas.drawPath(
-      path,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            AppColors.themeColor.withValues(alpha: 0.12),
-            AppColors.themeColor.withValues(alpha: 0.02),
-            Colors.transparent,
-          ],
-        ).createShader(Offset.zero & size),
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
 

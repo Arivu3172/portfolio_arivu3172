@@ -34,8 +34,8 @@ class FreelancingPage extends StatelessWidget {
 
     return CinematicScene(
       sceneNo: '05',
-      act: 'Collaboration',
-      title: 'Let’s Build the Next Scene',
+      act: 'Hire',
+      title: 'Let’s Build the Next App',
       line: 'Available for Flutter freelance — hourly or fixed scope.',
       narration: PortfolioContent.sceneNarrations[4],
       child: Column(
@@ -72,6 +72,7 @@ class FreelancingPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.bgColor2.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: AppColors.themeColor.withValues(alpha: 0.35),
                   ),
@@ -130,6 +131,7 @@ class _EngageChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(99),
         border: Border.all(
           color: AppColors.themeColor.withValues(alpha: 0.5),
         ),

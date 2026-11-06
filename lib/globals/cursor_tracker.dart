@@ -93,8 +93,8 @@ class CursorAmbient extends InheritedWidget {
     if (!visible || viewport.width <= 0) return AppColors.bgColor;
     final t = (_nx * 0.55 + (1 - _ny) * 0.45).clamp(0.0, 1.0);
     return Color.lerp(
-      const Color(0xFF050505),
-      const Color(0xFF1C160A),
+      const Color(0xFF070B16),
+      const Color(0xFF12182C),
       t,
     )!;
   }
@@ -113,7 +113,7 @@ class CursorAmbient extends InheritedWidget {
       ),
       colors: [
         backgroundColor,
-        Color.lerp(backgroundColor, const Color(0xFF2A2110), warm)!,
+        Color.lerp(backgroundColor, const Color(0xFF1A2744), warm)!,
         const Color(0xFF000000),
         Color.lerp(const Color(0xFF0A0A0A), backgroundColor, 0.5)!,
       ],

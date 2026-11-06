@@ -3,10 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:portfolio_arivu/globals/app_colors.dart';
 import 'package:portfolio_arivu/globals/cursor_tracker.dart';
-import 'package:portfolio_arivu/globals/water_animations.dart';
 
-/// Black canvas with gold dust, diagonal sheen, and soft vignette.
-/// Background tint follows the custom cursor when available.
+/// Deep ink field with drifting orbs, orbital rings, and a cursor-linked mesh.
 class WaterBackground extends StatefulWidget {
   const WaterBackground({super.key, required this.child});
 
@@ -25,7 +23,7 @@ class _WaterBackgroundState extends State<WaterBackground>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 22),
     )..repeat();
   }
 
@@ -38,20 +36,15 @@ class _WaterBackgroundState extends State<WaterBackground>
   @override
   Widget build(BuildContext context) {
     final ambient = CursorAmbient.maybeOf(context);
-    final gradient = ambient?.backgroundGradient ?? AppColors.oceanGradient;
-    final cursorAlign = ambient?.visible == true
-        ? ambient!.alignment
-        : null;
+    final cursorAlign = ambient?.visible == true ? ambient!.alignment : null;
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          curve: Curves.easeOutCubic,
-          decoration: BoxDecoration(gradient: gradient),
+        return DecoratedBox(
+          decoration: const BoxDecoration(gradient: AppColors.oceanGradient),
           child: CustomPaint(
-            painter: _LuxuryBackdropPainter(
+            painter: _MeshBackdropPainter(
               progress: _controller.value,
               cursorAlign: cursorAlign,
             ),
@@ -59,19 +52,13 @@ class _WaterBackgroundState extends State<WaterBackground>
           ),
         );
       },
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          const Positioned.fill(child: BubbleField(bubbleCount: 18)),
-          widget.child,
-        ],
-      ),
+      child: widget.child,
     );
   }
 }
 
-class _LuxuryBackdropPainter extends CustomPainter {
-  _LuxuryBackdropPainter({
+class _MeshBackdropPainter extends CustomPainter {
+  _MeshBackdropPainter({
     required this.progress,
     this.cursorAlign,
   });
@@ -79,58 +66,147 @@ class _LuxuryBackdropPainter extends CustomPainter {
   final double progress;
   final Alignment? cursorAlign;
 
+  static final List<Offset> _seeds = List<Offset>.generate(36, (i) {
+    final rng = math.Random(i * 17 + 3);
+    return Offset(rng.nextDouble(), rng.nextDouble());
+  });
+
   @override
   void paint(Canvas canvas, Size size) {
-    // Gold beam: prefers cursor, else slow cinematic drift
-    final beamCenter = cursorAlign ??
-        Alignment(
-          math.sin(progress * 2 * math.pi) * 0.4,
-          -0.2 + math.cos(progress * 2 * math.pi) * 0.15,
-        );
-    final beam = Paint()
+    final t = progress * math.pi * 2;
+    final cursor = cursorAlign == null
+        ? null
+        : Offset(
+            (cursorAlign!.x + 1) / 2 * size.width,
+            (cursorAlign!.y + 1) / 2 * size.height,
+          );
+
+    _orb(
+      canvas,
+      size,
+      center: Offset(
+        size.width * (0.82 + math.sin(t) * 0.04),
+        size.height * (0.16 + math.cos(t * 0.8) * 0.03),
+      ),
+      radius: size.shortestSide * 0.42,
+      color: AppColors.themeColor,
+      alpha: 0.16,
+    );
+    _orb(
+      canvas,
+      size,
+      center: Offset(
+        size.width * (0.12 + math.cos(t * 0.7) * 0.04),
+        size.height * (0.78 + math.sin(t * 0.6) * 0.03),
+      ),
+      radius: size.shortestSide * 0.48,
+      color: AppColors.aqua,
+      alpha: 0.14,
+    );
+
+    final ringCenter = Offset(size.width * 0.72, size.height * 0.38);
+    for (var i = 0; i < 3; i++) {
+      final radius = size.shortestSide * (0.18 + i * 0.11);
+      final ring = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = i == 1 ? 1.4 : 0.8
+        ..color = (i.isEven ? AppColors.themeColor : AppColors.aqua)
+            .withValues(alpha: 0.16 - i * 0.03);
+      canvas.save();
+      canvas.translate(ringCenter.dx, ringCenter.dy);
+      canvas.rotate(t * (i.isEven ? 0.15 : -0.1) + i);
+      canvas.drawArc(
+        Rect.fromCircle(center: Offset.zero, radius: radius),
+        0.4,
+        4.4,
+        false,
+        ring,
+      );
+      canvas.drawCircle(
+        Offset(math.cos(t + i) * radius, math.sin(t + i) * radius),
+        3.2,
+        Paint()..color = AppColors.lawGreen.withValues(alpha: 0.7),
+      );
+      canvas.restore();
+    }
+
+    final nodes = <Offset>[];
+    for (var i = 0; i < _seeds.length; i++) {
+      final seed = _seeds[i];
+      var point = Offset(
+        seed.dx * size.width + math.sin(t + i) * 10,
+        seed.dy * size.height + math.cos(t * 0.8 + i * 0.4) * 8,
+      );
+      if (cursor != null) {
+        final delta = cursor - point;
+        final dist = delta.distance;
+        if (dist < 180 && dist > 0) {
+          point += delta * ((1 - dist / 180) * 0.18);
+        }
+      }
+      nodes.add(point);
+    }
+
+    final link = Paint()
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+    for (var i = 0; i < nodes.length; i++) {
+      for (var j = i + 1; j < nodes.length; j++) {
+        final dist = (nodes[i] - nodes[j]).distance;
+        if (dist > 140) continue;
+        var alpha = (1 - dist / 140) * 0.22;
+        if (cursor != null) {
+          final mid = Offset.lerp(nodes[i], nodes[j], 0.5)!;
+          final near = (mid - cursor).distance;
+          if (near < 160) alpha += (1 - near / 160) * 0.28;
+        }
+        link.color = AppColors.themeColor.withValues(alpha: alpha.clamp(0, 0.45));
+        canvas.drawLine(nodes[i], nodes[j], link);
+      }
+    }
+
+    for (var i = 0; i < nodes.length; i++) {
+      var alpha = 0.35;
+      var radius = 1.6;
+      if (cursor != null) {
+        final near = (nodes[i] - cursor).distance;
+        if (near < 140) {
+          alpha += (1 - near / 140) * 0.5;
+          radius += (1 - near / 140) * 1.8;
+        }
+      }
+      canvas.drawCircle(
+        nodes[i],
+        radius,
+        Paint()
+          ..color = (i.isEven ? AppColors.lawGreen : AppColors.robinEdgeBlue)
+              .withValues(alpha: alpha.clamp(0, 0.9)),
+      );
+    }
+  }
+
+  void _orb(
+    Canvas canvas,
+    Size size, {
+    required Offset center,
+    required double radius,
+    required Color color,
+    required double alpha,
+  }) {
+    final paint = Paint()
       ..shader = RadialGradient(
-        center: beamCenter,
-        radius: cursorAlign != null ? 1.05 : 1.25,
         colors: [
-          AppColors.themeColor.withValues(
-            alpha: cursorAlign != null ? 0.2 : 0.14,
-          ),
-          AppColors.themeColor.withValues(alpha: 0.04),
+          color.withValues(alpha: alpha),
+          color.withValues(alpha: alpha * 0.25),
           Colors.transparent,
         ],
-        stops: const [0.0, 0.35, 1.0],
-      ).createShader(Offset.zero & size);
-    canvas.drawRect(Offset.zero & size, beam);
-
-    // Fine gold grid (luxury blueprint feel)
-    final grid = Paint()
-      ..color = AppColors.themeColor.withValues(alpha: 0.04)
-      ..strokeWidth = 1;
-    const step = 56.0;
-    for (double x = 0; x < size.width; x += step) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), grid);
-    }
-    for (double y = 0; y < size.height; y += step) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), grid);
-    }
-
-    // Soft bottom vignette band
-    final band = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.transparent,
-          AppColors.themeColor.withValues(alpha: 0.06),
-          Colors.black.withValues(alpha: 0.55),
-        ],
-        stops: const [0.55, 0.78, 1.0],
-      ).createShader(Offset.zero & size);
-    canvas.drawRect(Offset.zero & size, band);
+        stops: const [0.0, 0.45, 1.0],
+      ).createShader(Rect.fromCircle(center: center, radius: radius));
+    canvas.drawCircle(center, radius, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _LuxuryBackdropPainter oldDelegate) {
+  bool shouldRepaint(covariant _MeshBackdropPainter oldDelegate) {
     return oldDelegate.progress != progress ||
         oldDelegate.cursorAlign != cursorAlign;
   }

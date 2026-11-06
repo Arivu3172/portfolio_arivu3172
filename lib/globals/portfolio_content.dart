@@ -1,6 +1,6 @@
 import 'package:portfolio_arivu/globals/app_assets.dart';
 
-/// Shared portfolio copy used across cinematic scenes.
+/// Shared portfolio copy used across sections.
 class PortfolioContent {
   static const name = 'Arivazhagan A';
   static const role = 'Senior Flutter Developer';
@@ -162,20 +162,20 @@ class PortfolioContent {
 
   static const splashNarration =
       'Welcome. This is the portfolio of Arivazhagan A, Senior Flutter Developer. '
-      'A cinematic showcase of code, story, and motion.';
+      'I build Flutter apps for Android, iOS, and web.';
 
   /// Narration scripts aligned with MainDashBoard menu indexes.
   static const sceneNarrations = <String>[
-    'Scene one, Opening. I am Arivazhagan A, Senior Flutter Developer with over two years of experience. '
+    'Home. I am Arivazhagan A, Senior Flutter Developer with over two years of experience. '
         'I build production Flutter apps for Android, iOS, and web.',
-    'Scene two, Story. $aboutBody $aboutFocus',
-    'Scene three, Stack. My toolkit covers Flutter, Dart, state management, Firebase, REST APIs, '
+    'About. $aboutBody $aboutFocus',
+    'Skills. My toolkit covers Flutter, Dart, state management, Firebase, REST APIs, '
         'and shipping to Android, iOS, and web. Process: brief, design, build, and ship.',
-    'Scene four, Work. Featured productions include Howdy, TimesMed Doctor and Patient, '
+    'Work. Featured projects include Howdy, TimesMed Doctor and Patient, '
         'TimesMed V K A, and Coding Style.',
-    'Scene five, Hire. Available for Flutter freelance — app development, feature work, '
+    'Hire. Available for Flutter freelance — app development, feature work, '
         'bug fixes, optimization, and MVP builds.',
-    'Scene six, Contact. Let’s start the conversation. Reach out by email, LinkedIn, or GitHub.',
+    'Contact. Let’s start the conversation. Reach out by email, LinkedIn, or GitHub.',
   ];
 }
 

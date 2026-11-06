@@ -37,14 +37,15 @@ class SpeakButton extends StatelessWidget {
               vertical: compact ? 6 : 8,
             ),
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
               border: Border.all(
                 color: active
                     ? AppColors.lawGreen
                     : AppColors.themeColor.withValues(alpha: 0.65),
               ),
               color: active
-                  ? AppColors.themeColor.withValues(alpha: 0.12)
-                  : Colors.transparent,
+                  ? AppColors.themeColor.withValues(alpha: 0.16)
+                  : AppColors.bgColor2.withValues(alpha: 0.55),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

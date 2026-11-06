@@ -15,9 +15,9 @@ class SkillsPage extends StatelessWidget {
 
     return CinematicScene(
       sceneNo: '03',
-      act: 'Toolkit',
-      title: 'The Stack Behind the Scenes',
-      line: 'Tools and patterns that keep every production scene sharp.',
+      act: 'Skills',
+      title: 'Tools I Use',
+      line: 'The stack and process behind the apps I ship.',
       narration: PortfolioContent.sceneNarrations[2],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,6 +38,7 @@ class SkillsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   color: AppColors.bgColor2.withValues(alpha: 0.88),
+                  borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: AppColors.themeColor.withValues(alpha: 0.35),
                   ),
@@ -64,6 +65,7 @@ class SkillsPage extends StatelessWidget {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(99),
                                   border: Border.all(
                                     color: AppColors.themeColor
                                         .withValues(alpha: 0.45),
@@ -141,6 +143,8 @@ class _ProcessBeat extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: AppColors.bgColor2.withValues(alpha: 0.45),
         border: Border.all(
           color: AppColors.themeColor.withValues(alpha: 0.35),
         ),

@@ -257,171 +257,243 @@ Coding Style .................. Architecture · Widgets · Craft''',
 
   @override
   Widget build(BuildContext context) {
+    final wide = MediaQuery.sizeOf(context).width >= 800;
+    final status = _booting
+        ? 'BOOT'
+        : _done
+            ? 'READY'
+            : 'LIVE ${_cmdIndex + 1}/${_commands.length}';
+
     return Scaffold(
       backgroundColor: const Color(0xFF020805),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF041008),
-        foregroundColor: _matrix,
-        elevation: 0,
-        title: Text(
-          'resume.sh  —  secure shell',
-          style: _mono(size: 13, weight: FontWeight.w600),
-        ),
-        actions: [
-          if (!_done)
-            TextButton(
-              onPressed: _skip,
-              child: Text('SKIP >>', style: _mono(size: 11, color: AppColors.themeColor)),
-            ),
-          IconButton(
-            tooltip: 'Speak resume',
-            onPressed: _speakResume,
-            icon: const Icon(Icons.record_voice_over_rounded, size: 20),
-          ),
-          IconButton(
-            tooltip: 'Classic image',
-            onPressed: _openClassic,
-            icon: const Icon(Icons.image_outlined, size: 20),
-          ),
-          const SizedBox(width: 4),
-        ],
-      ),
       body: Stack(
         children: [
-          // Matrix rain-ish dots
           Positioned.fill(
             child: IgnorePointer(
               child: AnimatedBuilder(
                 animation: _scan,
                 builder: (context, _) {
                   return CustomPaint(
-                    painter: _MatrixRainPainter(t: _scan.value),
+                    painter: _HackerBackdropPainter(t: _scan.value),
                   );
                 },
               ),
             ),
           ),
-          // Scanline
-          Positioned.fill(
-            child: IgnorePointer(
-              child: AnimatedBuilder(
-                animation: _scan,
-                builder: (context, _) {
-                  return CustomPaint(
-                    painter: _ScanlinePainter(t: _scan.value),
-                  );
-                },
-              ),
-            ),
-          ),
-          Column(
-            children: [
-              Container(
-                width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: _matrix.withValues(alpha: 0.25)),
-                  ),
-                ),
-                child: Text(
-                  _booting
-                      ? 'INITIALIZING...'
-                      : _done
-                          ? 'SESSION COMPLETE  ·  ${PortfolioContent.name.toUpperCase()}'
-                          : 'STREAMING RESUME  ·  ${_cmdIndex + 1}/${_commands.length}',
-                  style: _mono(size: 11, color: _muted),
-                ),
-              ),
-              Expanded(
-                child: SelectionArea(
-                  child: ListView.builder(
-                    controller: _scroll,
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 28),
-                    itemCount: _lines.length + (_done ? 1 : 1),
-                    itemBuilder: (context, index) {
-                      if (index >= _lines.length) {
-                        return AnimatedBuilder(
-                          animation: _blink,
-                          builder: (context, _) {
-                            return Text(
-                              _done
-                                  ? 'root@arivu:~\$ █'
-                                  : '█',
-                              style: _mono(
-                                color: _matrix.withValues(
-                                  alpha: 0.35 + _blink.value * 0.65,
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      }
-                      final line = _lines[index];
-                      return Text(
-                        line.text.isEmpty ? ' ' : line.text,
-                        style: _mono(
-                          color: switch (line.kind) {
-                            _LineKind.system => AppColors.themeColor,
-                            _LineKind.prompt => _muted,
-                            _LineKind.output => _matrix,
-                            _LineKind.blank => _matrix,
-                          },
-                          weight: line.kind == _LineKind.prompt
-                              ? FontWeight.w600
-                              : FontWeight.w400,
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(wide ? 28 : 12),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 920),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: const Color(0x66101812),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: _matrix.withValues(alpha: 0.45)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _matrix.withValues(alpha: 0.12),
+                          blurRadius: 28,
                         ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              if (_done)
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF041008),
-                    border: Border(
-                      top: BorderSide(color: _matrix.withValues(alpha: 0.25)),
+                      ],
                     ),
-                  ),
-                  child: Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      _TermAction(
-                        label: 'mailto',
-                        onTap: () => launchUrl(
-                          Uri.parse('mailto:arivazhagan3172@gmail.com'),
+                    child: Column(
+                      children: [
+                        _ConsoleBar(
+                          status: status,
+                          mono: _mono,
+                          onBack: () => Navigator.of(context).maybePop(),
+                          onSkip: _done ? null : _skip,
+                          onSpeak: _speakResume,
+                          onImage: _openClassic,
                         ),
-                      ),
-                      _TermAction(
-                        label: 'github',
-                        onTap: () => launchUrl(
-                          Uri.parse('https://github.com/Arivu3172'),
-                        ),
-                      ),
-                      _TermAction(
-                        label: 'linkedin',
-                        onTap: () => launchUrl(
-                          Uri.parse(
-                            'https://www.linkedin.com/in/arivazhagan-a-0431bb24a',
+                        Expanded(
+                          child: SelectionArea(
+                            child: ListView.builder(
+                              controller: _scroll,
+                              padding: const EdgeInsets.fromLTRB(18, 16, 18, 20),
+                              itemCount: _lines.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index >= _lines.length) {
+                                  return AnimatedBuilder(
+                                    animation: _blink,
+                                    builder: (context, _) {
+                                      return Text(
+                                        _done ? 'root@arivu:~\$ █' : '█',
+                                        style: _mono(
+                                          color: _matrix.withValues(
+                                            alpha: 0.35 + _blink.value * 0.65,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                                final line = _lines[index];
+                                final isPrompt = line.kind == _LineKind.prompt;
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    top: isPrompt ? 10 : 0,
+                                    bottom: 1,
+                                  ),
+                                  child: Text(
+                                    line.text.isEmpty ? ' ' : line.text,
+                                    style: _mono(
+                                      color: switch (line.kind) {
+                                        _LineKind.system => AppColors.themeColor,
+                                        _LineKind.prompt => _muted,
+                                        _LineKind.output => _matrix,
+                                        _LineKind.blank => _matrix,
+                                      },
+                                      weight: isPrompt
+                                          ? FontWeight.w700
+                                          : FontWeight.w400,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      _TermAction(
-                        label: 'classic_resume.png',
-                        onTap: _openClassic,
-                      ),
-                    ],
+                        if (_done)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
+                            child: Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                _TermAction(
+                                  label: 'mail',
+                                  onTap: () => launchUrl(
+                                    Uri.parse(
+                                      'mailto:arivazhagan3172@gmail.com',
+                                    ),
+                                  ),
+                                ),
+                                _TermAction(
+                                  label: 'github',
+                                  onTap: () => launchUrl(
+                                    Uri.parse('https://github.com/Arivu3172'),
+                                  ),
+                                ),
+                                _TermAction(
+                                  label: 'linkedin',
+                                  onTap: () => launchUrl(
+                                    Uri.parse(
+                                      'https://www.linkedin.com/in/arivazhagan-a-0431bb24a',
+                                    ),
+                                  ),
+                                ),
+                                _TermAction(
+                                  label: 'image',
+                                  onTap: _openClassic,
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-            ],
+              ),
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ConsoleBar extends StatelessWidget {
+  const _ConsoleBar({
+    required this.status,
+    required this.mono,
+    required this.onBack,
+    required this.onSkip,
+    required this.onSpeak,
+    required this.onImage,
+  });
+
+  final String status;
+  final TextStyle Function({
+    double size,
+    Color color,
+    FontWeight weight,
+  }) mono;
+  final VoidCallback onBack;
+  final VoidCallback? onSkip;
+  final VoidCallback onSpeak;
+  final VoidCallback onImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0x9907140C),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(17)),
+        border: Border(
+          bottom: BorderSide(
+            color: const Color(0xFF39FF14).withValues(alpha: 0.28),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          _dot(const Color(0xFFFF5F57)),
+          const SizedBox(width: 6),
+          _dot(const Color(0xFFFEBC2E)),
+          const SizedBox(width: 6),
+          _dot(const Color(0xFF28C840)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'resume.sh',
+              style: mono(size: 13, weight: FontWeight.w700),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(99),
+              color: const Color(0xFF39FF14).withValues(alpha: 0.12),
+            ),
+            child: Text(status, style: mono(size: 10, color: const Color(0xFF6BFF8A))),
+          ),
+          if (onSkip != null)
+            TextButton(
+              onPressed: onSkip,
+              child: Text('SKIP', style: mono(size: 11, color: AppColors.themeColor)),
+            ),
+          IconButton(
+            tooltip: 'Speak',
+            onPressed: onSpeak,
+            icon: const Icon(Icons.record_voice_over_rounded, size: 18),
+            color: const Color(0xFF39FF14),
+          ),
+          IconButton(
+            tooltip: 'Image',
+            onPressed: onImage,
+            icon: const Icon(Icons.image_outlined, size: 18),
+            color: const Color(0xFF39FF14),
+          ),
+          IconButton(
+            tooltip: 'Back',
+            onPressed: onBack,
+            icon: const Icon(Icons.close_rounded, size: 18),
+            color: const Color(0xFF39FF14),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dot(Color color) {
+    return Container(
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 }
@@ -440,8 +512,10 @@ class _TermAction extends StatelessWidget {
         onTap();
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(99),
+          color: const Color(0xFF39FF14).withValues(alpha: 0.08),
           border: Border.all(
             color: const Color(0xFF39FF14).withValues(alpha: 0.55),
           ),
@@ -506,57 +580,152 @@ class _ClassicResumeView extends StatelessWidget {
   }
 }
 
-class _ScanlinePainter extends CustomPainter {
-  _ScanlinePainter({required this.t});
+/// Circuit board, traveling packets, and a radar sweep.
+class _HackerBackdropPainter extends CustomPainter {
+  _HackerBackdropPainter({required this.t});
+
   final double t;
+
+  static const _green = Color(0xFF39FF14);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final y = size.height * t;
+    final trace = Paint()
+      ..color = _green.withValues(alpha: 0.42)
+      ..strokeWidth = 1.2
+      ..style = PaintingStyle.stroke;
+    final pad = Paint()..color = _green.withValues(alpha: 0.7);
+
+    final lanes = <double>[
+      size.height * 0.18,
+      size.height * 0.42,
+      size.height * 0.67,
+      size.height * 0.86,
+    ];
+    for (final y in lanes) {
+      canvas.drawLine(Offset(24, y), Offset(size.width - 24, y), trace);
+      for (double x = 48; x < size.width - 40; x += 92) {
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromCenter(center: Offset(x, y), width: 7, height: 7),
+            const Radius.circular(1),
+          ),
+          pad,
+        );
+        if (x.toInt() % 3 == 0) {
+          canvas.drawLine(Offset(x, y), Offset(x, y + 36), trace);
+          canvas.drawCircle(Offset(x, y + 36), 2.2, pad);
+        }
+      }
+      final packetX = 24 + ((t * 1.7 + y) % 1) * (size.width - 48);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromCenter(center: Offset(packetX, y), width: 18, height: 4),
+          const Radius.circular(2),
+        ),
+        Paint()..color = const Color(0xFFD8FFD8).withValues(alpha: 0.85),
+      );
+    }
+
+    _radar(canvas, Offset(size.width * 0.86, size.height * 0.22), 72);
+    _brackets(canvas, size);
+    _label(canvas, const Offset(28, 18), 'SYS://ARIVU');
+    _label(canvas, Offset(size.width - 118, size.height - 28), 'LINK 04');
+  }
+
+  void _radar(Canvas canvas, Offset center, double radius) {
+    final ring = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..color = _green.withValues(alpha: 0.5);
+    for (var i = 1; i <= 3; i++) {
+      canvas.drawCircle(center, radius * i / 3, ring);
+    }
+    canvas.drawLine(
+      Offset(center.dx - radius, center.dy),
+      Offset(center.dx + radius, center.dy),
+      ring,
+    );
+    canvas.drawLine(
+      Offset(center.dx, center.dy - radius),
+      Offset(center.dx, center.dy + radius),
+      ring,
+    );
+
+    final angle = t * math.pi * 2;
+    final sweep = Path()
+      ..moveTo(center.dx, center.dy)
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: radius),
+        angle - 0.7,
+        0.7,
+        false,
+      )
+      ..close();
+    canvas.drawPath(
+      sweep,
+      Paint()..color = _green.withValues(alpha: 0.32),
+    );
+    canvas.drawLine(
+      center,
+      Offset(center.dx + math.cos(angle) * radius, center.dy + math.sin(angle) * radius),
+      Paint()
+        ..color = _green.withValues(alpha: 0.8)
+        ..strokeWidth = 1.4,
+    );
+    canvas.drawCircle(
+      Offset(
+        center.dx + math.cos(angle * 1.7) * radius * 0.55,
+        center.dy + math.sin(angle * 1.3) * radius * 0.4,
+      ),
+      3,
+      Paint()..color = const Color(0xFFE8FFE8),
+    );
+  }
+
+  void _brackets(Canvas canvas, Size size) {
+    const arm = 22.0;
     final paint = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          Colors.transparent,
-          const Color(0xFF39FF14).withValues(alpha: 0.08),
-          Colors.transparent,
-        ],
-      ).createShader(Rect.fromLTWH(0, y - 40, size.width, 80));
-    canvas.drawRect(Rect.fromLTWH(0, y - 40, size.width, 80), paint);
-
-    final line = Paint()
-      ..color = const Color(0xFF39FF14).withValues(alpha: 0.03)
-      ..strokeWidth = 1;
-    for (double i = 0; i < size.height; i += 3) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), line);
+      ..color = _green.withValues(alpha: 0.75)
+      ..strokeWidth = 1.4
+      ..style = PaintingStyle.stroke;
+    final corners = <Offset>[
+      const Offset(16, 16),
+      Offset(size.width - 16, 16),
+      Offset(16, size.height - 16),
+      Offset(size.width - 16, size.height - 16),
+    ];
+    final signs = <Offset>[
+      const Offset(1, 1),
+      const Offset(-1, 1),
+      const Offset(1, -1),
+      const Offset(-1, -1),
+    ];
+    for (var i = 0; i < corners.length; i++) {
+      final o = corners[i];
+      final s = signs[i];
+      canvas.drawLine(o, o + Offset(arm * s.dx, 0), paint);
+      canvas.drawLine(o, o + Offset(0, arm * s.dy), paint);
     }
   }
 
-  @override
-  bool shouldRepaint(covariant _ScanlinePainter oldDelegate) =>
-      oldDelegate.t != t;
-}
-
-class _MatrixRainPainter extends CustomPainter {
-  _MatrixRainPainter({required this.t});
-  final double t;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rng = math.Random(7);
-    final paint = Paint()..style = PaintingStyle.fill;
-    for (var i = 0; i < 40; i++) {
-      final x = rng.nextDouble() * size.width;
-      final speed = 0.3 + rng.nextDouble() * 0.7;
-      final y = ((t * speed + rng.nextDouble()) % 1.0) * size.height;
-      paint.color = const Color(0xFF39FF14)
-          .withValues(alpha: 0.04 + rng.nextDouble() * 0.06);
-      canvas.drawCircle(Offset(x, y), 1.2, paint);
-    }
+  void _label(Canvas canvas, Offset at, String text) {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: TextStyle(
+          color: _green.withValues(alpha: 0.7),
+          fontSize: 10,
+          fontFamily: 'monospace',
+          letterSpacing: 1.4,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(canvas, at);
   }
 
   @override
-  bool shouldRepaint(covariant _MatrixRainPainter oldDelegate) =>
+  bool shouldRepaint(covariant _HackerBackdropPainter oldDelegate) =>
       oldDelegate.t != t;
 }

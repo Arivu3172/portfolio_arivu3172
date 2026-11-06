@@ -5,7 +5,7 @@ import 'package:portfolio_arivu/globals/hover_text.dart';
 import 'package:portfolio_arivu/globals/speak_button.dart';
 import 'package:portfolio_arivu/globals/text_style.dart';
 
-/// Full-viewport film scene: letterbox, slug, staggered entrance.
+/// Full-viewport section: soft glass panel, index pill, staggered entrance.
 class CinematicScene extends StatefulWidget {
   const CinematicScene({
     super.key,
@@ -38,7 +38,6 @@ class _CinematicSceneState extends State<CinematicScene>
   late final AnimationController _controller;
   late final Animation<double> _fade;
   late final Animation<Offset> _slide;
-  late final Animation<double> _lineGrow;
 
   @override
   void initState() {
@@ -52,12 +51,6 @@ class _CinematicSceneState extends State<CinematicScene>
       begin: const Offset(0, 0.08),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-    _lineGrow = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.25, 0.85, curve: Curves.easeOutCubic),
-      ),
-    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _controller.forward();
@@ -85,36 +78,6 @@ class _CinematicSceneState extends State<CinematicScene>
         ),
         child: Stack(
           children: [
-            // Film grain-ish vignette edges
-            Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.black.withValues(alpha: 0.55),
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.65),
-                      ],
-                      stops: const [0.0, 0.12, 0.88, 1.0],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Side letterbox rails
-            Positioned(
-              left: 0,
-              top: 0,
-              bottom: 0,
-              child: Container(
-                width: 3,
-                color: accent.withValues(alpha: 0.15),
-              ),
-            ),
             Padding(
               padding: EdgeInsets.fromLTRB(
                 hPad,
@@ -130,9 +93,7 @@ class _CinematicSceneState extends State<CinematicScene>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _SceneSlug(
-                        sceneNo: widget.sceneNo,
                         act: widget.act,
-                        lineProgress: _lineGrow,
                         accent: accent,
                       ),
                       const SizedBox(height: 18),
@@ -165,8 +126,7 @@ class _CinematicSceneState extends State<CinematicScene>
                       SpeakButton(
                         text: widget.narration ??
                             [
-                              'Scene ${widget.sceneNo}. ${widget.act}.',
-                              widget.title,
+                              '${widget.act}. ${widget.title}.',
                               if (widget.line != null) widget.line!,
                             ].join(' '),
                       ),
@@ -186,58 +146,31 @@ class _CinematicSceneState extends State<CinematicScene>
 
 class _SceneSlug extends StatelessWidget {
   const _SceneSlug({
-    required this.sceneNo,
     required this.act,
-    required this.lineProgress,
     required this.accent,
   });
 
-  final String sceneNo;
   final String act;
-  final Animation<double> lineProgress;
   final Color accent;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        HoverText(
-          'SCENE $sceneNo',
-          underline: false,
-          scale: 1.06,
-          letterSpacingBoost: 1.5,
-          style: AppTextStyles.indexStyle().copyWith(
-            letterSpacing: 3,
-            color: accent,
-          ),
-        ),
-        const SizedBox(width: 14),
-        AnimatedBuilder(
-          animation: lineProgress,
-          builder: (context, _) {
-            return Container(
-              width: 48 * lineProgress.value,
-              height: 1,
-              color: accent,
-            );
-          },
-        ),
-        const SizedBox(width: 14),
-        HoverText(
-          act.toUpperCase(),
-          underline: true,
-          scale: 1.04,
-          letterSpacingBoost: 1.8,
-          style: AppTextStyles.headerTextStyle(
-            color: AppColors.white.withValues(alpha: 0.55),
-          ),
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(99),
+        border: Border.all(color: accent.withValues(alpha: 0.4)),
+      ),
+      child: Text(
+        act,
+        style: AppTextStyles.headerTextStyle(color: accent),
+      ),
     );
   }
 }
 
-/// Thin film progress rail for the active scene.
+/// Horizontal nav chips for the active section.
 class FilmProgressRail extends StatelessWidget {
   const FilmProgressRail({
     super.key,
@@ -263,21 +196,26 @@ class FilmProgressRail extends StatelessWidget {
         final selected = i == active;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: HoverText(
-            labels[i].toUpperCase(),
-            underline: !selected,
-            scale: 1.06,
-            letterSpacingBoost: 1.4,
-            playClick: true,
-            onTap: () => onSelect(i),
-            style: AppTextStyles.headerTextStyle(
-              color: selected
-                  ? accent
-                  : AppColors.white.withValues(alpha: 0.7),
-            ).copyWith(
-              decoration: selected ? TextDecoration.underline : null,
-              decorationColor: accent,
-              decorationThickness: 1.5,
+          child: Material(
+            color: selected
+                ? accent.withValues(alpha: 0.18)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(99),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(99),
+              onTap: () => onSelect(i),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Text(
+                  labels[i],
+                  style: AppTextStyles.headerTextStyle(
+                    color: selected
+                        ? accent
+                        : AppColors.white.withValues(alpha: 0.72),
+                  ),
+                ),
+              ),
             ),
           ),
         );

@@ -31,9 +31,9 @@ class _MainDashBoardState extends State<MainDashBoard> {
       ScrollOffsetListener.create();
 
   final menuItems = <String>[
-    'Opening',
-    'Story',
-    'Stack',
+    'Home',
+    'About',
+    'Skills',
     'Work',
     'Hire',
     'Contact',
@@ -129,8 +129,8 @@ class _MainDashBoardState extends State<MainDashBoard> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withValues(alpha: 0.92),
-                Colors.black.withValues(alpha: 0.35),
+                AppColors.bgColor.withValues(alpha: 0.92),
+                AppColors.bgColor.withValues(alpha: 0.2),
               ],
             ),
           ),
@@ -196,7 +196,7 @@ class _MainDashBoardState extends State<MainDashBoard> {
                     (e) => PopupMenuItem<int>(
                       value: e.key,
                       child: Text(
-                        'SCENE 0${e.key + 1}  ${e.value}',
+                        '${e.key + 1}  ${e.value}',
                         style: AppTextStyles.headerTextStyle(),
                       ),
                     ),

@@ -56,9 +56,9 @@ class _ContactUsState extends State<ContactUs> {
 
     return CinematicScene(
       sceneNo: '06',
-      act: 'Final Frame',
+      act: 'Contact',
       title: 'Start the Conversation',
-      line: 'The next scene could be yours — freelance or full-time.',
+      line: 'Freelance or full-time — send a note and I’ll reply.',
       narration: PortfolioContent.sceneNarrations[5],
       child: narrow
           ? Column(
@@ -111,6 +111,7 @@ class _ContactUsState extends State<ContactUs> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.bgColor2.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: AppColors.themeColor.withValues(alpha: 0.35),
         ),
@@ -148,13 +149,13 @@ class _ContactUsState extends State<ContactUs> {
         filled: true,
         fillColor: AppColors.bgColor.withValues(alpha: 0.55),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(
             color: AppColors.themeColor.withValues(alpha: 0.2),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.themeColor),
         ),
         contentPadding:
@@ -186,6 +187,7 @@ class _InfoTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: AppColors.bgColor2.withValues(alpha: 0.75),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: AppColors.themeColor.withValues(alpha: 0.35),
           ),

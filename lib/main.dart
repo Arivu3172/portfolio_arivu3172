@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = GoogleFonts.spaceGroteskTextTheme(
+    final TextTheme textTheme = GoogleFonts.manropeTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme,
     );
 
@@ -41,11 +41,11 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: AppColors.themeColor,
-          titleTextStyle: GoogleFonts.syne(
+          titleTextStyle: GoogleFonts.outfit(
             fontSize: 18,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             color: AppColors.themeColor,
-            letterSpacing: -0.4,
+            letterSpacing: -0.3,
           ),
         ),
         useMaterial3: true,

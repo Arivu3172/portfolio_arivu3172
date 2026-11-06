@@ -16,7 +16,7 @@ class AppButtons {
       color: AppColors.themeColor,
       splashColor: AppColors.lawGreen,
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       hoverColor: AppColors.lawGreen,
       elevation: 4,
       height: 48,
@@ -24,7 +24,7 @@ class AppButtons {
       focusElevation: 10,
       child: Text(
         buttonName,
-        style: AppTextStyles.headerTextStyle(color: Colors.black),
+        style: AppTextStyles.headerTextStyle(color: AppColors.bgColor),
       ),
     );
   }

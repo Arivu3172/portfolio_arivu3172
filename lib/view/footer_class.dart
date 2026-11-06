@@ -14,10 +14,10 @@ class FooterClass extends StatelessWidget {
       width: MediaQuery.sizeOf(context).width,
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.92),
+        color: AppColors.bgColor.withValues(alpha: 0.92),
         border: Border(
           top: BorderSide(
-            color: AppColors.themeColor.withValues(alpha: 0.35),
+            color: AppColors.themeColor.withValues(alpha: 0.28),
           ),
         ),
       ),
@@ -27,7 +27,7 @@ class FooterClass extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('END CREDITS', style: AppTextStyles.indexStyle()),
+                Text('PORTFOLIO', style: AppTextStyles.indexStyle()),
                 const SizedBox(height: 8),
                 Text(
                   'Arivazhagan A  ·  Flutter Developer',
@@ -56,11 +56,14 @@ class FooterClass extends StatelessWidget {
               height: 42,
               width: 42,
               alignment: Alignment.center,
-              color: AppColors.themeColor,
+              decoration: const BoxDecoration(
+                color: AppColors.themeColor,
+                shape: BoxShape.circle,
+              ),
               child: const Icon(
                 Icons.arrow_upward,
                 size: 20,
-                color: Colors.black,
+                color: AppColors.bgColor,
               ),
             ),
           ),
